@@ -5,7 +5,7 @@
     versionCode = "10"
     version     = "1.0.0" >
 <!-- versionCode is optional and Android only -->
-  <name short="ChkNCrb">Chicken&ampCrab</name>
+  <name short="ChkNCrb">Chicken &amp Crab</name>
   <description>
       Why did the chicken cross the road?
   </description>
