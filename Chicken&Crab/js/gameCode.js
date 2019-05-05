@@ -417,10 +417,10 @@ window.addEventListener('load', function(){
   ctx.drawImage(sprites.goal, goal.x, goal.y, goal.w, goal.h);
 
   //draw the arrows
-  arrows.forEach(function(element,index){
+  /*arrows.forEach(function(element,index){
     ctx.fillStyle = element.fill;
     ctx.fillRect(element.x, element.y, element.w, element.h);
-  });
+  });*/
   ctx.drawImage(sprites.arrows, gameWidth - GAME_BORDER - 128, arrows[0].y);
 
   //draw the enemies
