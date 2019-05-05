@@ -154,7 +154,7 @@ ctx = canvas.getContext("2d");
 window.addEventListener('load', function(){
   // Directional functions used for mouse clicks, touch screen touches, and arrow keys
   var up = function(){
-    player.speedY = -1 * Math.round(0.001 * gameHeight);
+    player.speedY = -1 * Math.round(0.003 * gameHeight);
     if (player.speedY == 0){
       player.speedY = -1;
     }
@@ -162,7 +162,7 @@ window.addEventListener('load', function(){
   }
 
   var down = function(){
-    player.speedY = Math.abs(Math.round(0.001 * gameHeight));
+    player.speedY = Math.abs(Math.round(0.003 * gameHeight));
     if (player.speedY == 0){
       player.speedY = 1;
     }
@@ -170,7 +170,7 @@ window.addEventListener('load', function(){
   }
 
   var left = function(){
-    player.speedX = -1 * Math.round(0.001 * gameWidth);
+    player.speedX = -1 * Math.round(0.003 * gameWidth);
     if (player.speedX == 0){
       player.speedX = -1;
     }
@@ -178,7 +178,7 @@ window.addEventListener('load', function(){
   }
 
   var right = function(){
-    player.speedX = Math.abs(Math.round(0.001 * gameWidth));
+    player.speedX = Math.abs(Math.round(0.003 * gameWidth));
     if (player.speedX == 0){
       player.speedX = 1;
     }
