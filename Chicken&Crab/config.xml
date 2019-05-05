@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.darylsonnier.chickenncrab"
+    versionCode = "10"
+    version     = "1.0.0" >
+<!-- versionCode is optional and Android only -->
+  <name short="ChkNCrb">Chicken 'N Crab</name>
+  <description>
+      Why did the chicken cross the road?
+  </description>
+  <author href="https://www.google.com" email="daryl@chaosgamingpc.com">
+      Daryl Sonnier
+  </author>
+  <platform name="android" />
+  <content src="index.html"></content>
+  <preference name="Fullscreen" value="true" />
+  <preference name="StatusBarOverlaysWebView" value="true" />
+</widget>
