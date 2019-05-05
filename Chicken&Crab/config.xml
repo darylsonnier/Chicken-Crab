@@ -16,5 +16,5 @@
   <content src="index.html"></content>
   <preference name="Fullscreen" value="true" />
   <preference name="StatusBarOverlaysWebView" value="true" />
-  <icon src="images/icon.png" platform="android" />
+  <icon src="images/icon.png" platform="android" qualifier="hdpi"/>
 </widget>
