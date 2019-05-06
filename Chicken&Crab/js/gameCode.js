@@ -7,7 +7,12 @@ var elem = document.createElement('canvas');
 var msgEl = {};
 //constants
 var GAME_BORDER = 10;
+var SCORE_BORDER = 50;
 // global variables
+var score = 0;
+var scoreBonus = 50;
+var startTime = new Date();
+var endTime = new Date();
 var gameWidth = elem.width;
 var gameHeight = elem.height;
 var gameLive = true;
@@ -150,6 +155,9 @@ document.body.appendChild(elem);
 canvas = document.getElementById("myCanvas");
 ctx = canvas.getContext("2d");
 
+// Set initial time for start of game
+startTime.getTime();
+console.log(startTime);
 
 window.addEventListener('load', function(){
   // Directional functions used for mouse clicks, touch screen touches, and arrow keys
@@ -268,6 +276,7 @@ window.addEventListener('load', function(){
 
   //update logic
   var update = function(){
+    keepScore();
     // Adjust position according to browser size
     player.RelativeY = player.y / gameHeight;
     gameWidth = elem.width;
@@ -292,7 +301,14 @@ window.addEventListener('load', function(){
         backgroundAudio.pause();
         gameWon.play();
         level++;
-        tempAlert('You\'ve reached level ' + level + '!',8000);
+        score += scoreBonus;
+        scoreBonus += 10;
+        endTime = new Date();
+        var delay = Math.floor((endTime - startTime) / 1000);
+        score -= delay;
+        console.log((endTime - startTime) / 1000);
+        startTime = new Date();
+        tempAlert('You\'ve reached level ' + level + ' in ' + delay + ' seconds!',8000);
         switch (Math.floor(Math.random() * 4)){
           case 0:
             sprites.background.src = 'images/pavedFloor.png';
@@ -336,10 +352,10 @@ window.addEventListener('load', function(){
       }
       else if (player.x > gameWidth - GAME_BORDER - player.w)
       {
-        player.x = gameWidth - GAME_BORDER - player.w;
+        player.x = gameWidth - GAME_BORDER - player.w - 1;
       }
-      else if (player.y < GAME_BORDER ){
-        player.y = GAME_BORDER;
+      else if (player.y < SCORE_BORDER ){
+        player.y = SCORE_BORDER;
       }
       else if (player.y > gameHeight - GAME_BORDER - player.h){
         player.y = gameHeight - GAME_BORDER - player.h;
@@ -355,6 +371,7 @@ window.addEventListener('load', function(){
         backgroundAudio.pause();
         gameOver.play();
         level = 1;
+        score = 0;
         tempAlert('Game Over',4000);
         player.x = 10;
         player.y = (gameHeight / 2) - (player.h / 2);
@@ -373,7 +390,7 @@ window.addEventListener('load', function(){
         element.speedY *= -1;
         element.y = gameHeight - element.h - GAME_BORDER;
       }
-      else if (element.y <= GAME_BORDER){
+      else if (element.y <= SCORE_BORDER){
         element.speedY *= -1;
       }
     });
@@ -500,6 +517,7 @@ function tempAlert(msg,duration){
   }
   msgEl = document.createElement("div");
   msgEl.setAttribute("id", "temp");
+  msgEl.setAttribute("class", "messageText");
   //el.setAttribute("style","position:absolute;top:50%;left:40%;background-color:transparent;color:white;font-size:45px;font-style:bolder;");
   msgEl.innerHTML = msg;
   setTimeout(function(){
@@ -509,4 +527,11 @@ function tempAlert(msg,duration){
     catch (err){}
   },duration);
   document.body.appendChild(msgEl);
+}
+
+function keepScore(){
+  var levelEl = document.getElementById("level");
+  var scoreEl = document.getElementById("score");
+  levelEl.innerHTML = "Level: " + level;
+  scoreEl.innerHTML = "Score: " + score;
 }
