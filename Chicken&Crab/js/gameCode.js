@@ -156,7 +156,7 @@ if (document.compatMode === 'BackCompat') {
     viewportWidth = document.documentElement.clientWidth;
 }
 
-// Set Pillar locations
+// Set Swamp locations
 swamps.forEach(function(element, index){
   element.x = randomIntFromInterval(compass.w + GAME_BORDER, viewportWidth - GAME_BORDER - compass.w);
   element.y = randomIntFromInterval(SCORE_BORDER * 2, viewportHeight - GAME_BORDER - element.h);
@@ -386,8 +386,13 @@ window.addEventListener('load', function(){
         enemies.forEach(function(element, index){
           element.speedY += element.speedY/Math.abs(element.speedY);
         });
-        showSwamps = true;
-        // Set Pillar locations
+        if (Math.random() > 0.5){
+          showSwamps = true;
+        }
+        else{
+          showSwamps = false;
+        }
+        // Set Swamp locations
         swamps.forEach(function(element, index){
           element.h = viewportHeight;
           element.x = randomIntFromInterval(compass.w + GAME_BORDER, viewportWidth - GAME_BORDER - compass.w);
@@ -400,7 +405,6 @@ window.addEventListener('load', function(){
         var tmpY = player.y;
         swamps.forEach(function(element, index){
           if (checkCollision(player, element)){
-            console.log('Pillar ' + index);
             if (player.speedX > 0){
               player.speedX = 1;
             }
@@ -408,17 +412,12 @@ window.addEventListener('load', function(){
               player.speedY = 1;
             }
           }
-          else{
-            player.x += player.speedX;
-            player.y += player.speedY;
-          }
         })
       }
-      else {
-        console.log("No swamps");
-        player.x += player.speedX;
-        player.y += player.speedY;
-      }
+      player.x += player.speedX;
+      player.y += player.speedY;
+
+      console.log(player.speedX);
       if (player.x < GAME_BORDER){
         player.x = GAME_BORDER;
       }
