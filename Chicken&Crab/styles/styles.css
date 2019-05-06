@@ -8,32 +8,42 @@ body{
 
 /* Style by id */
 #temp{
-  top: 47.5%;
+  top: 47%;
   left: auto;
   text-align: center;
-  font-size: 45px;
+  vertical-align: center;
+  font-size: 30px;
 }
 
 #title{
-  top: 5px;
   text-align: center;
-  left: auto;
-  font-size: 35px;
+  font-size: 25px;
 }
 
 #level{
-  top: 5px;
-  left: 5%;
-  font-size: 30px;
+  text-align: left;
+  margin-left: 20px;
 }
 
 #score{
-  top: 5px;
-  left: 90%;
-  font-size: 30px;
+  left: -20px;
+  text-align: right;
+}
+
+#dimensions{
+  position: absolute;
+  top: 90%;
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  color: white;
 }
 
 /* Style by class */
+.topBar{
+  top: 5px;
+  font-size: 20px;
+}
 .messageText{
   position:absolute;
   background-color: transparent;
@@ -53,4 +63,18 @@ body{
   width: 0px;
   height: 0px;
   border: 0px;
+}
+
+@media screen and (min-width: 800px){
+  .topBar{
+    font-size: 30px;
+  }
+
+  #title{
+    font-size: 35px
+  }
+
+  #temp{
+    font-size: 45px;
+  }
 }
