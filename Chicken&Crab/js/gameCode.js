@@ -17,6 +17,7 @@ var gameWidth = elem.width;
 var gameHeight = elem.height;
 var gameLive = true;
 var level = 1;
+var showSwamps = false;
 //var lostGame = sessionStorage.getItem('lostGame');
 var lostGame = false;
 //grab the canvas and context
@@ -65,43 +66,59 @@ var enemies = [
     h: 40
   }
 ];
+var swamps = [
+  {
+    w: 287,
+    h: 143
+  },
+  {
+    w: 287,
+    h: 143
+  },
+  {
+    w: 287,
+    h: 143
+  },
+  {
+    w: 287,
+    h: 143
+  }
+]
 var compass = {
-  x: gameWidth - GAME_BORDER - 128,
-  y: gameHeight - GAME_BORDER - 128,
+  x: 0,
+  y: 0,
   w: 128,
   h: 128
 };
 var arrows = [
   {
     // Up arrow
-    x: gameWidth - GAME_BORDER - 79,
-    y: gameHeight - 160,
-    yOffset: 160,
+    x: 0,
+    y: 0,
     w: 30,
     h: 40,
     fill: 'red'
   },
   {
     // Down arrow
-    x: gameWidth - GAME_BORDER - 79,
-    y: gameHeight - 72,
-    yOffset: 72,
+    x: 0,
+    y: 0,
     w: 30,
     h: 40,
     fill: 'green'
   },
   {
     // Left arrow
-    x: gameWidth - GAME_BORDER - 128,
-    y: gameHeight - 110,
+    x: 0,
+    y: 0,
     w: 40,
     h: 30,
     fill: 'blue'
   },
   {
     // Right arrow
-    x: gameWidth - GAME_BORDER - 40,
-    y: gameHeight - 110,
+    x: 0,
+    y: 0,
     w: 40,
     h: 30,
     fill: 'yellow'
@@ -124,13 +141,11 @@ var goal = {
   w: 100,
   h: 100,
 }
-
 // Sprites
 var sprites = {};
 //cursor position
 var xPos = 0;
 var yPos = 0;
-
 
 // Get Viewport dimensions
 if (document.compatMode === 'BackCompat') {
@@ -140,6 +155,12 @@ if (document.compatMode === 'BackCompat') {
     viewportHeight = document.documentElement.clientHeight;
     viewportWidth = document.documentElement.clientWidth;
 }
+
+// Set Pillar locations
+swamps.forEach(function(element, index){
+  element.x = randomIntFromInterval(compass.w + GAME_BORDER, viewportWidth - GAME_BORDER - compass.w);
+  element.y = randomIntFromInterval(SCORE_BORDER * 2, viewportHeight - GAME_BORDER - element.h);
+});
 
 // Setup Canvas
 elem.id = 'myCanvas';
@@ -257,6 +278,8 @@ window.addEventListener('load', function(){
     sprites.arrows.src = 'images/compass rose.png';
     sprites.bonus = new Image();
     sprites.bonus.src = 'images/chest.png';
+    sprites.swamp = new Image();
+    sprites.swamp.src = 'images/swamp.png';
   }
 
   function sprite(options){
@@ -357,16 +380,45 @@ window.addEventListener('load', function(){
             backgroundAudio.setAttribute('src', 'sounds/background4.mp3');
             break;
         }
-
         backgroundAudio.play();
         player.x = 10;
         player.isMoving = false;
         enemies.forEach(function(element, index){
-        element.speedY += element.speedY/Math.abs(element.speedY);
+          element.speedY += element.speedY/Math.abs(element.speedY);
+        });
+        showSwamps = true;
+        // Set Pillar locations
+        swamps.forEach(function(element, index){
+          element.h = viewportHeight;
+          element.x = randomIntFromInterval(compass.w + GAME_BORDER, viewportWidth - GAME_BORDER - compass.w);
+          element.y = randomIntFromInterval(SCORE_BORDER * 2, viewportHeight - GAME_BORDER - element.h);
+        });
+      }
+
+      if (showSwamps){
+        var tmpX = player.x;
+        var tmpY = player.y;
+        swamps.forEach(function(element, index){
+          if (checkCollision(player, element)){
+            console.log('Pillar ' + index);
+            if (player.speedX > 0){
+              player.speedX = 1;
+            }
+            if (player.speedY > 0){
+              player.speedY = 1;
+            }
+          }
+          else{
+            player.x += player.speedX;
+            player.y += player.speedY;
+          }
         })
       }
-      player.x += player.speedX;
-      player.y += player.speedY;
+      else {
+        console.log("No swamps");
+        player.x += player.speedX;
+        player.y += player.speedY;
+      }
       if (player.x < GAME_BORDER){
         player.x = GAME_BORDER;
       }
@@ -400,6 +452,7 @@ window.addEventListener('load', function(){
           element.speedY = element.speedDefault;
         });
         gameLive = true;
+        showSwamps = false;
         backgroundAudio.play();
       }
       // move enemy
@@ -447,7 +500,19 @@ window.addEventListener('load', function(){
   ctx.fillStyle = pat;
   ctx.fill();
 
+  if (showSwamps){
+    swamps.forEach(function(element, index){
+      var pat2 = ctx.createPattern(sprites.swamp, 'repeat');
+      ctx.rect(element.x, 0, element.w, viewportHeight);
+      ctx.fillStyle = pat2;
+      ctx.fillRect(element.x, 0, element.w, viewportHeight);
+      //ctx.drawImage(sprites.swamp, element.x, element.y, element.w, element.h);
+    });
+  }
+
   //draw Player
+  //ctx.fillStyle = '#00FF00';
+  //ctx.fillRect(player.x, player.y, player.w, player.h);
   ctx.drawImage(sprites.player, chickenPos[chickenIndex], 0, 94, 89, player.x, player.y, player.w, player.h);
 
   //draw the goal
@@ -477,9 +542,7 @@ window.addEventListener('load', function(){
 
   // check for Collision
   var checkCollision = function(rect1, rect2){
-    var closeOnWidth = Math.abs(rect1.x - rect2.x) <= Math.max(rect1.w, rect2.w);
-    var closeOnHeight = Math.abs(rect1.y - rect2.y) <= Math.max(rect1.h, rect2.h);
-    return closeOnWidth && closeOnHeight;
+    return rect1.x < rect2.x + rect2.w && rect1.x + rect1.w > rect2.x && rect1.y < rect2.y + rect2.h && rect1.y + rect1.h > rect2.y;
   };
 
   // check arrow click
@@ -555,4 +618,8 @@ function keepScore(){
   levelEl.innerHTML = "Level: " + level;
   scoreEl.innerHTML = "Score: " + score;
   //dimensions.innerHTML = gameWidth + ' x ' + gameHeight;
+}
+
+function randomIntFromInterval(min,max){
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
