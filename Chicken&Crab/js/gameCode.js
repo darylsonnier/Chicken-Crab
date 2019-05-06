@@ -562,5 +562,5 @@ function keepScore(){
   var scoreEl = document.getElementById("score");
   levelEl.innerHTML = "Level: " + level;
   scoreEl.innerHTML = "Score: " + score;
-  dimensions.innerHTML = gameWidth + ' x ' + gameHeight;
+  //dimensions.innerHTML = gameWidth + ' x ' + gameHeight;
 }
