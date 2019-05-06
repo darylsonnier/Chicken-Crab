@@ -65,6 +65,12 @@ var enemies = [
     h: 40
   }
 ];
+var compass = {
+  x: gameWidth - GAME_BORDER - 128,
+  y: gameHeight - GAME_BORDER - 128,
+  w: 128,
+  h: 128
+};
 var arrows = [
   {
     // Up arrow
@@ -122,15 +128,11 @@ var goal = {
   x: gameWidth - 120,
   y: gameHeight / 2,
   w: 100,
-  h: 100
+  initialW: 100,
+  h: 100,
+  initialH: 100
 }
-//level
-var levelMarker = {
-x: gameWidth - 130,
-y: 0,
-w: 40,
-h: 52
-}
+
 // Sprites
 var sprites = {};
 //cursor position
@@ -276,18 +278,44 @@ window.addEventListener('load', function(){
 
   //update logic
   var update = function(){
+    // Adjust score on display
     keepScore();
+
+    // Adjust size of goal and compass rose to fit screen resolution
+    if (gameWidth < 1000  || gameHeight < 450){
+      goal.w = Math.floor(goal.initialW / 2);
+      goal.h = Math.floor(goal.initialH / 2);
+      compass.w = 64;
+      compass.h = 64;
+    }
+    else {
+      goal.w = goal.initialW;
+      goal.h = goal.initialH;
+      compass.w = 128;
+      compass.h = 128;
+    }
+    arrows.forEach(function(element,index){
+      element.w = Math.floor(.333 * compass.w);
+      element.h = Math.floor(.333 * compass.h);
+    })
+    arrows[0].x = compass.x + arrows[0].w;
+    arrows[0].y = compass.y;
+    arrows[1].x = compass.x + arrows[1].w;
+    arrows[1].y = compass.y + 2 * arrows[1].h;
+    arrows[2].x = compass.x;
+    arrows[2].y = compass.y + arrows[2].h;
+    arrows[3].x = compass.x + 2 * arrows[3].w;
+    arrows[3].y = compass.y + arrows[3].h;
+
     // Adjust position according to browser size
     player.RelativeY = player.y / gameHeight;
     gameWidth = elem.width;
     gameHeight = elem.height;
     player.y = Math.round(player.RelativeY * gameHeight);
     goal.y = (gameHeight / 2);// - (goal.h / 2);
-    goal.x = gameWidth - GAME_BORDER - goal.w - 30;
-    arrows.forEach(function(element,index){
-      element.y = gameHeight - element.yOffset;
-      element.x = gameWidth - element.xOffset;
-    });
+    goal.x = gameWidth - GAME_BORDER - compass.w;
+    compass.x = gameWidth - GAME_BORDER - compass.w;
+    compass.y = gameHeight - GAME_BORDER - compass.h;
 
     //update the position of the Player
     if (player.isMoving && player.x < gameWidth - player.w - GAME_BORDER && player.x >= GAME_BORDER){
@@ -431,14 +459,14 @@ window.addEventListener('load', function(){
   ctx.drawImage(sprites.player, chickenPos[chickenIndex], 0, 94, 89, player.x, player.y, player.w, player.h);
 
   //draw the goal
-  ctx.drawImage(sprites.goal, goal.x, goal.y, goal.w, goal.h);
+  ctx.drawImage(sprites.goal, goal.x, goal.y - Math.floor((goal.w / 2)), goal.w, goal.h);
 
   //draw the arrows
   /*arrows.forEach(function(element,index){
     ctx.fillStyle = element.fill;
     ctx.fillRect(element.x, element.y, element.w, element.h);
   });*/
-  ctx.drawImage(sprites.arrows, gameWidth - GAME_BORDER - 128, arrows[0].y);
+  ctx.drawImage(sprites.arrows, compass.x, compass.y, compass.w, compass.h);
 
   //draw the enemies
   enemies.forEach(function(element, index){
@@ -534,4 +562,5 @@ function keepScore(){
   var scoreEl = document.getElementById("score");
   levelEl.innerHTML = "Level: " + level;
   scoreEl.innerHTML = "Score: " + score;
+  dimensions.innerHTML = gameWidth + ' x ' + gameHeight;
 }
