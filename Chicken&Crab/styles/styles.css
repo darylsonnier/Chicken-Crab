@@ -1,4 +1,4 @@
-/* Styles for body */
+/* Style for body */
 body{
   padding: 0px;
   margin: 0px;
@@ -6,14 +6,39 @@ body{
   overflow: hidden;
 }
 
-/* Styles by id */
+/* Style by id */
 #temp{
+  top: 47.5%;
+  left: auto;
+  text-align: center;
+  font-size: 45px;
+}
+
+#title{
+  top: 5px;
+  text-align: center;
+  left: auto;
+  font-size: 35px;
+}
+
+#level{
+  top: 5px;
+  left: 5%;
+  font-size: 30px;
+}
+
+#score{
+  top: 5px;
+  left: 90%;
+  font-size: 30px;
+}
+
+/* Style by class */
+.messageText{
   position:absolute;
-  top:47.5%;
-  left:40%;
-  background-color:transparent;
-  color:white;
-  font-size:45px;
+  background-color: transparent;
+  width: 100%;
+  color: white;
   font-style:bolder;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -23,7 +48,6 @@ body{
   user-select: none;
 }
 
-/* Styles by class */
 .audio{
   display: none;
   width: 0px;
