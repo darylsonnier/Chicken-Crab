@@ -75,7 +75,6 @@ var arrows = [
   {
     // Up arrow
     x: gameWidth - GAME_BORDER - 79,
-    xOffset: GAME_BORDER + 79,
     y: gameHeight - 160,
     yOffset: 160,
     w: 30,
@@ -85,7 +84,6 @@ var arrows = [
   {
     // Down arrow
     x: gameWidth - GAME_BORDER - 79,
-    xOffset: GAME_BORDER + 79,
     y: gameHeight - 72,
     yOffset: 72,
     w: 30,
@@ -95,9 +93,7 @@ var arrows = [
   {
     // Left arrow
     x: gameWidth - GAME_BORDER - 128,
-    xOffset: GAME_BORDER + 128,
     y: gameHeight - 110,
-    yOffset: 110,
     w: 40,
     h: 30,
     fill: 'blue'
@@ -105,9 +101,7 @@ var arrows = [
   {
     // Right arrow
     x: gameWidth - GAME_BORDER - 40,
-    xOffset: GAME_BORDER + 40,
     y: gameHeight - 110,
-    yOffset: 110,
     w: 40,
     h: 30,
     fill: 'yellow'
@@ -128,9 +122,7 @@ var goal = {
   x: gameWidth - 120,
   y: gameHeight / 2,
   w: 100,
-  initialW: 100,
   h: 100,
-  initialH: 100
 }
 
 // Sprites
@@ -283,14 +275,14 @@ window.addEventListener('load', function(){
 
     // Adjust size of goal and compass rose to fit screen resolution
     if (gameWidth < 1000  || gameHeight < 450){
-      goal.w = Math.floor(goal.initialW / 2);
-      goal.h = Math.floor(goal.initialH / 2);
-      compass.w = 64;
-      compass.h = 64;
+      goal.w = 75;
+      goal.h = 75;
+      compass.w = 100;
+      compass.h = 100;
     }
     else {
-      goal.w = goal.initialW;
-      goal.h = goal.initialH;
+      goal.w = 100;
+      goal.h = 100;
       compass.w = 128;
       compass.h = 128;
     }
